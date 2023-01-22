@@ -32,7 +32,7 @@ font = pygame.font.SysFont("consolas",64)
 score = 0
 fps = 60
 distance = 10
-time_left = 5
+time_left = 10
 
 while situation:
     for event in pygame.event.get():
@@ -43,17 +43,23 @@ while situation:
     gamescreen.blit(monster, monster_location)
     gamescreen.blit(coin, coin_location)
 
+    #set timer for gameover
+    ticks = pygame.time.get_ticks()
+    timer = time_left-(int(ticks/1000))
+
     #set score text and draw line
     text = font.render("Score: "+str(score), True, (255,0,0))
     text_location = text.get_rect()
     text_location.topleft=(20,20)
     gamescreen.blit(text,text_location)
     pygame.draw.line(gamescreen,(255,0,0),(0,100),(1000,100),2)
+    time_text = font.render("Time: "+str(timer), True, (255,0,0))
+    time_text_location = time_text.get_rect()
+    time_text_location.topleft= (700,20)
+    gamescreen.blit(time_text,time_text_location)
     time.tick(fps)
 
-    #set timer for gameover
-    ticks = pygame.time.get_ticks()
-    timer = time_left-(int(ticks/1000))
+
 
     #what happens when the counter reaches zero
     if timer == 0:
@@ -63,8 +69,12 @@ while situation:
         time_over.play()
         text = font.render("Score: " + str(score), True, (255, 0, 0))
         text_location = text.get_rect()
-        text_location.topleft = (350, 300)
+        text_location.topleft = (350, 350)
         gamescreen.blit(text, text_location)
+        time_text = font.render("Time: " + str(time_left), True, (255, 0, 0))
+        time_text_location = time_text.get_rect()
+        time_text_location.topleft = (350, 250)
+        gamescreen.blit(time_text, time_text_location)
         pygame.display.update()
         pygame.time.wait(5000)
         situation=False
